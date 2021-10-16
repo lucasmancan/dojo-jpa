@@ -9,9 +9,11 @@ class CustomVendaRepositoryImpl(private val entityManager: EntityManager) : Cust
     override fun getVendaEntityById(id: Int): VendaEntity {
         return entityManager.createQuery(
             """
+            
             SELECT new br.com.lucasmancan.dojojpa.entity.VendaEntity(v.id, v.dataRegistro, v.valor) 
             FROM VendaJpaEntity v
             where v.id =:id
+            
         """.trimIndent(), VendaEntity::class.java
         ).setParameter("id", id).singleResult
     }

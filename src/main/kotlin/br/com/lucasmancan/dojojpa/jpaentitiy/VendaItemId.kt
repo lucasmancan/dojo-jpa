@@ -1,5 +1,6 @@
 package br.com.lucasmancan.dojojpa.jpaentitiy
 
+import java.io.Serializable
 import javax.persistence.Column
 import javax.persistence.Embeddable
 
@@ -10,4 +11,4 @@ class VendaItemId(
 
     @Column(name = "produto_id")
     var produtoId: Int? = null
-)
+) : Serializable
