@@ -21,7 +21,7 @@ DROP TABLE IF EXISTS `dojo_jpa`.`usuarios` ;
 
 CREATE TABLE IF NOT EXISTS `dojo_jpa`.`usuarios` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `nome` VARCHAR(45) NULL,
+  `nome` VARCHAR(255) NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
@@ -32,12 +32,12 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `dojo_jpa`.`vendas` ;
 
 CREATE TABLE IF NOT EXISTS `dojo_jpa`.`vendas` (
-  `id` INT NOT NULL,
+  `id`  INT NOT NULL AUTO_INCREMENT,
   `data_registro` TIMESTAMP NULL,
   `data_atualizacao` TIMESTAMP NULL,
   `usuario_id` INT NOT NULL,
   `valor` DECIMAL(13,2) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`id`, `usuario_id`),
+  PRIMARY KEY (`id`),
   INDEX `fk_vendas_usuarios1_idx` (`usuario_id` ASC) VISIBLE,
   CONSTRAINT `fk_vendas_usuarios1`
     FOREIGN KEY (`usuario_id`)
@@ -54,8 +54,8 @@ DROP TABLE IF EXISTS `dojo_jpa`.`produtos` ;
 
 CREATE TABLE IF NOT EXISTS `dojo_jpa`.`produtos` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `nome` VARCHAR(45) NOT NULL,
-  `descricao` VARCHAR(45) NOT NULL,
+  `nome` VARCHAR(255)  NOT NULL,
+  `descricao` VARCHAR(255)  NOT NULL,
   `preco` DECIMAL(13,2) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
@@ -98,7 +98,6 @@ CREATE TABLE IF NOT EXISTS `dojo_jpa`.`permissoes` (
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
-
 -- -----------------------------------------------------
 -- Table `dojo_jpa`.`permissoes_usuarios`
 -- -----------------------------------------------------
@@ -126,3 +125,26 @@ ENGINE = InnoDB;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+
+## Populando base
+
+INSERT into dojo_jpa.permissoes values(null, "SALVAR-VENDA");
+INSERT into dojo_jpa.permissoes values(null, "SALVAR-PRODUTO");
+
+insert into dojo_jpa.usuarios values(null, 'Fred');
+insert into dojo_jpa.usuarios values(null, 'Caio');
+insert into dojo_jpa.permissoes_usuarios values (1, 1);
+insert into dojo_jpa.permissoes_usuarios values (1, 2);
+insert into dojo_jpa.permissoes_usuarios values (2, 1);
+insert into dojo_jpa.permissoes_usuarios values (2, 2);
+
+
+insert into dojo_jpa.produtos values(null, 'Refrigerante 1L', 'Bebida gaseificada sabor guaraná 1L', 10);
+insert into dojo_jpa.produtos values(null, 'Farinha de trigo 1kg', 'Farinha branca de alta qualidade, muito versátil.', 5);
+
+insert into dojo_jpa.vendas  values(null, current_timestamp, current_timestamp, 1, 10);
+insert into dojo_jpa.vendas  values(null, current_timestamp, current_timestamp, 2, 5);
+
+INSERT INTO dojo_jpa.vendas_itens values (1, 1, 1, current_timestamp, 10);
+INSERT INTO dojo_jpa.vendas_itens values (2, 1, 1, current_timestamp, 10);

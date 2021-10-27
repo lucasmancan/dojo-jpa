@@ -11,6 +11,11 @@ class UsuarioJpaEntity(
 
     var nome: String? = null,
 
-    @ManyToMany
+    @ManyToMany(cascade = [CascadeType.ALL])
+    @JoinTable(
+        name = "usuarios_permissoes",
+        joinColumns = [JoinColumn(name = "usuario_id")],
+        inverseJoinColumns = [JoinColumn(name = "permissao_id")]
+    )
     var permissoes: Set<PermissaoJpaEntity> = setOf()
 )

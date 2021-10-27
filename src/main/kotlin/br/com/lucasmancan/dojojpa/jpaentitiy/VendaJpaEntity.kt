@@ -1,16 +1,30 @@
 package br.com.lucasmancan.dojojpa.jpaentitiy
 
+import org.hibernate.annotations.NamedQueries
+import org.hibernate.annotations.NamedQuery
 import java.math.BigDecimal
 import java.time.LocalDateTime
 import javax.persistence.*
 
+
 @Entity
 @Table(name = "vendas")
-@NamedQuery(name = "VendaJpaEntity.findById", query = "SELECT v FROM VendaJpaEntity v where v.id =:id")
+@NamedQueries(
+    NamedQuery(
+        name = "VendaJpaEntity.findById",
+        query = "SELECT v FROM VendaJpaEntity v where v.id =:id"
+    )
+)
+@NamedNativeQueries(
+    NamedNativeQuery(
+        name = "VendaJpaEntity.findNativeById",
+        query = "select * from vendas v where v.id =:id", resultClass = VendaJpaEntity::class
+    )
+)
 class VendaJpaEntity(
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Int? = null,
 
     @Column(name = "data_registro")

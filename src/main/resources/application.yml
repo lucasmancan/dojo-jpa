@@ -3,14 +3,17 @@ spring:
     username: root
     url: jdbc:mysql://localhost:3306/dojo_jpa?useTimezone=true&serverTimezone=America/Sao_Paulo
     driverClassName: com.mysql.jdbc.Driver
-    testWhileIdle: 'true'
-    validationQuery: SELECT 1
     password: root
   jpa:
+    show-sql: true
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
+        generate_statistics: true
+        format_sql: true
     hibernate:
       naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
-      ddl-auto: update
-    show-sql: 'true'
+      ddl-auto: none
+      format_sql: true
+
+
