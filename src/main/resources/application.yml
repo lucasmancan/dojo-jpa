@@ -11,6 +11,8 @@ spring:
         dialect: org.hibernate.dialect.MySQLDialect
         generate_statistics: true
         format_sql: true
+        temp:
+          use_jdbc_metadata_defaults: false
     hibernate:
       naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
       ddl-auto: none

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings
+        xmlns="http://xmlns.jcp.org/xml/ns/persistence/orm"
+        version="2.2">
+
+    <named-query name="VendaJpaEntity.findByUserId">
+        <query>SELECT v from VendaJpaEntity v where v.usuario.id =:usuarioId</query>
+    </named-query>
+
+</entity-mappings>

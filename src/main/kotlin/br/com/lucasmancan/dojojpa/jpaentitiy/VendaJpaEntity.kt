@@ -15,6 +15,10 @@ import javax.persistence.*
         query = "SELECT v FROM VendaJpaEntity v where v.id =:id"
     )
 )
+@NamedEntityGraph(
+    name = "venda-com-items",
+    attributeNodes =  [NamedAttributeNode("itens")]
+)
 @NamedNativeQueries(
     NamedNativeQuery(
         name = "VendaJpaEntity.findNativeById",
@@ -37,7 +41,7 @@ class VendaJpaEntity(
     var usuario: UsuarioJpaEntity? = null,
 
     @OneToMany(cascade = [CascadeType.ALL], mappedBy = "venda", orphanRemoval = true)
-    var itens: Set<VendaItemJpaEntity> = hashSetOf(),
+    var itens: MutableSet<VendaItemJpaEntity> = mutableSetOf(),
 
     @Column(precision = 13, scale = 2)
     var valor: BigDecimal? = null
