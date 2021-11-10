@@ -6,6 +6,8 @@ import javax.persistence.Embeddable
 
 @Embeddable
 class VendaItemId(
+
+    //https://www.baeldung.com/jpa-composite-primary-keys
     @Column(name = "venda_id")
     var vendaId: Int? = null,
 
