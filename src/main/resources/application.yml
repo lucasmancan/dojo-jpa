@@ -1,9 +1,9 @@
 spring:
-  datasource:
-    username: root
-    url: jdbc:mysql://localhost:3306/dojo_jpa?useTimezone=true&serverTimezone=America/Sao_Paulo
-    driverClassName: com.mysql.jdbc.Driver
-    password: root
+#  datasource:
+#    username: root
+#    url: jdbc:mysql://localhost:3306/dojo_jpa?useTimezone=true&serverTimezone=America/Sao_Paulo
+#    driverClassName: com.mysql.jdbc.Driver
+#    password: root
   jpa:
     show-sql: true
     properties:

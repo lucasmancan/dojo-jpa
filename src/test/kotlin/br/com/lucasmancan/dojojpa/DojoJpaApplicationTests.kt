@@ -3,24 +3,72 @@ package br.com.lucasmancan.dojojpa
 import br.com.lucasmancan.dojojpa.entity.VendaEntity
 import br.com.lucasmancan.dojojpa.jpaentitiy.VendaJpaEntity
 import br.com.lucasmancan.dojojpa.repository.VendaRepository
+import org.junit.ClassRule
 import org.junit.jupiter.api.Test
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager
+import org.springframework.boot.test.util.TestPropertyValues
+import org.springframework.context.ApplicationContextInitializer
+import org.springframework.context.ConfigurableApplicationContext
+import org.springframework.test.context.DynamicPropertyRegistry
+import org.springframework.test.context.DynamicPropertySource
+import org.testcontainers.containers.MySQLContainer
+import org.testcontainers.junit.jupiter.Container
+import org.testcontainers.junit.jupiter.Testcontainers
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 
 
 @DataJpaTest
+@Testcontainers
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 internal class DojoJpaApplicationTests(
     @Autowired private val vendaRepository: VendaRepository,
     @Autowired private val testEntityManager: TestEntityManager
 ) {
+    class MyPostgreSQLContainer(imageName: String) : MySQLContainer<MyPostgreSQLContainer>(imageName)
+
+
+
+    companion object {
+
+        var postgreSQLContainer: MyPostgreSQLContainer = MyPostgreSQLContainer("mysql")
+            .withDatabaseName("integration-tests-db")
+            .withUsername("sa")
+            .withPassword("sa");
+        @DynamicPropertySource
+        @JvmStatic
+        fun databaseProperties(registry: DynamicPropertyRegistry) {
+            registry.add("spring.datasource.url", postgreSQLContainer::getJdbcUrl);
+            registry.add("spring.datasource.username", postgreSQLContainer::getUsername);
+            registry.add("spring.datasource.password", postgreSQLContainer::getPassword);
+
+            postgreSQLContainer.start()
+        }
+    }
+
+
+
+    fun initialize(configurableApplicationContext: ConfigurableApplicationContext) {
+        TestPropertyValues.of(
+            "spring.datasource.url=" + postgreSQLContainer.getJdbcUrl(),
+            "spring.datasource.username=" + postgreSQLContainer.getUsername(),
+            "spring.datasource.password=" + postgreSQLContainer.getPassword()
+        ).applyTo(configurableApplicationContext.environment)
+    }
 
     private val logger = LoggerFactory.getLogger(DojoJpaApplicationTests::class.java)
+
+//    @Test
+//    fun `birolea`(){
+//       postgreSQLContainer.start()
+//
+//
+//        print("")
+//    }
 
     @Test
     fun `Jpa Projections`() {
